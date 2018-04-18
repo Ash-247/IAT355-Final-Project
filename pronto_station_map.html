@@ -71,14 +71,22 @@ function updateMap(p) { //'p' for points (on scatterplot)
     for (i=0; i < p.length; i++) {
         selectedPoints.push(p[i].DateN);
         // console.log(p[0].DataN);
+
+
+            // var avgTripLengthseconds = d3.mean(data, function(d){return +p[i].tripduration});
+            // averageSelectedTime = (f(avgTripLengthseconds/60));
     }
+// dataUpdate();
 
-console.log(selectedPoints.length);
 
 
+selectedMembers = 0;
+selectedPassholders =0;
+unselectedMembers = 0;
+unselectedPassholders =0;
 selectedPoints=_.uniq(selectedPoints);
 
-console.log(" uniq ... dates is "+selectedPoints.length)
+// console.log(" uniq ... dates is "+selectedPoints.length)
 // make sure all trips are black
 trips.style("stroke", "black")
 .style("stroke-opacity",0.01)
@@ -90,13 +98,25 @@ if (selectedPoints.length>0)
       for(i=0;i<selectedPoints.length;i++){
         // if  t.startime  is in the points selected array
         // console.log(" trip "+ii+"   is selected at date "+t.starttime);
-        if(t.starttime.substring(0,10) == selectedPoints[i]){ // just for test .
+        if(t.starttime.substring(0,10) == selectedPoints[i]){
+
+          if(t.usertype == "Member"){
+            selectedMembers++;
+          }else{
+            selectedPassholders++;
+          }
+
+            // just for test .
         t.selected=true;
         return true
 }
         }
+
         t.selected=false;
          return false;
+
+
+
 
 
     })
@@ -120,6 +140,19 @@ if (selectedPoints.length>0)
     //     trips.style("stroke", "red");
     // }
     //return selectedDate;
+
+    totalselectedriders = selectedMembers + selectedPassholders;
+    totalunselectedriders = totalriders - totalselectedriders;
+
+    unselectedMembers = members - selectedMembers;
+    unselectedPassholders = passholders - selectedPassholders;
+
+    console.log(selectedPoints.length);
+    console.log(selectedMembers+" selected memebers");
+    console.log(selectedPassholders+" passholders")
+    console.log(unselectedMembers+" unselected memebers");
+    console.log(unselectedPassholders+" unselected passholders");
+
 }
 
     d3.csv("data/Combined2.csv", function(error, data) {
@@ -142,7 +175,7 @@ if (selectedPoints.length>0)
         //}
 
          trips = g.selectAll("line")
-            .data(data.filter(function (d,i){ return (i%4==0) })) //Counts and parses data values
+            .data(data.filter(function (d,i){ return (i<5000) })) //Counts and parses data values
             .enter()
             .append("line")
             .style("stroke-opacity","0.01")
@@ -196,13 +229,13 @@ if (selectedPoints.length>0)
 
 
 
-
         }
 
       //  mymap.on("viewreset", update);
       //  mymap.on("zoomend", update);
 
         update();
+
 
         // tooltipHtml();
     });

@@ -2,32 +2,59 @@
 
 var members=0;
 var passholders=0;
-var male=0;
-var female=0;
-var other=0;
+
 var totalriders;
+var totalselectedriders;
+var totalunselectedriders;
 var barchartsize = 300;
 
+var selectedMembers=0;
+var selectedPassholders=0;
+var averageSelectedTime=0;
+var averageUnselectedTime=0;
 
-        d3.csv("Combined12.csv", function(data) {
+var unselectedMembers;
+var unselectedPassholders;
+var rider=[];
+
+// function updateMap(p) { //'p' for points (on scatterplot)
+//
+//     for (i=0; i < p.length; i++) {
+//
+//         if(p[i].usertype == "Member"){
+//           selectedMembers++;
+//         }else{
+//           selectedPassholders++;
+//         }
+//             var avgTripLengthseconds = d3.mean(data, function(d){return +p[i].tripduration});
+//             averageSelectedTime = (f(avgTripLengthseconds/60));
+//
+//
+//     }
+//
+//
+// }
+
+        d3.csv("data/Combined2.csv", function(data) {
 
 
-                data.forEach(function (d) {
+                data.forEach(function (d,i) {
+                  if(i<5000){
+
+                  rider =[];
                 if(d.usertype == "Member"){
                   members++;
                 }else{
                   passholders++;
                 }
+                rider.push(d);
+              }
 
-                if(d.gender == "Male"){
-                  male++;
-                }else if(d.gender == "Female"){
-                  female++;
-                }else if(d.gender == "Other"){
-                  other++;
-                }
 
-                })
+
+              })
+
+
 
 
 
@@ -74,6 +101,8 @@ var barchartsize = 300;
                 console.log(f(avgTripLength/60)+" minutes");
                 totalriders = members + passholders;
 
+
+
                 d3.select("body")
                   .append("svg")
                   .attr("id","stats")
@@ -82,7 +111,7 @@ var barchartsize = 300;
                   .append("text")
                   .attr("x",0)
                   .attr("y",15)
-                  .text("Number of Rides: "+totalriders)
+                  .text("Total Number of Rides: "+totalriders)
                   .attr("font-family", "-apple-system,sans-serif")
                   .attr("font-weight","600")
                   .attr("font-size", "18px")
@@ -148,5 +177,26 @@ var barchartsize = 300;
 
 
 
+
+
                 // tooltipHtml();
               });
+
+
+              // function dataUpdate(){
+              //   console.log(rider.length);
+              //   for(i=0;i<selectedPoints.length;i++)
+              //    if(rider.starttime.substring(0,10) == selectedPoints[i]){
+              //      selectedMembers = 0;
+              //      selectedPassholders =0;
+              //      unselectedMembers = 0;
+              //      unselectedPassholders =0;
+              //      if(rider.usertype == "Member"){
+              //        selectedMembers++;
+              //      }else{
+              //        selectedPassholders++;
+              //      }
+              //
+              //      }
+              //    }
+                 // dataUpdate();
