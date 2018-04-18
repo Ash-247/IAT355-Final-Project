@@ -179,24 +179,138 @@ var rider=[];
 
 
 
+
+
+
+
                 // tooltipHtml();
               });
 
 
-              // function dataUpdate(){
-              //   console.log(rider.length);
-              //   for(i=0;i<selectedPoints.length;i++)
-              //    if(rider.starttime.substring(0,10) == selectedPoints[i]){
-              //      selectedMembers = 0;
-              //      selectedPassholders =0;
-              //      unselectedMembers = 0;
-              //      unselectedPassholders =0;
-              //      if(rider.usertype == "Member"){
-              //        selectedMembers++;
-              //      }else{
-              //        selectedPassholders++;
-              //      }
-              //
-              //      }
-              //    }
-                 // dataUpdate();
+              function drawSelectedBarChart(){
+              d3.select("#statsSelected").remove();
+              d3.select("body")
+                .append("svg")
+                .attr("id","statsSelected")
+                .attr("width",barchartsize*2)
+                .attr("height",100)
+              d3.select("#statsSelected")
+                .append("text")
+                .attr("x",0)
+                .attr("y",15)
+                .text("Total Number of Selected Rides: "+totalselectedriders)
+                .attr("font-family", "-apple-system,sans-serif")
+                .attr("font-weight","600")
+                .attr("font-size", "18px")
+                .attr("fill","black");
+
+
+                d3.select("#statsSelected")
+                .append("rect")
+                .attr("x",0)
+                .attr("y",20)
+                .attr("width",(selectedMembers/totalselectedriders)*barchartsize)
+                .attr("height",40)
+                .style("fill","#009892");
+
+                d3.select("#statsSelected")
+                .append("text")
+                .attr("x",5)
+                .attr("y",35)
+                .style("text-shadow","1px 1px 2px rgba(50,50,50,0.6)")
+                .text("Members:")
+                .attr("font-family", "-apple-system,sans-serif")
+                .attr("font-size", "13px")
+                .attr("fill","white")
+                .append("tspan")
+                .attr("x",5)
+                .attr("y",55)
+                .text(selectedMembers);
+
+
+                d3.select("#statsSelected")
+                .append("rect")
+                .attr("x",(selectedMembers/totalselectedriders)*barchartsize)
+                .attr("y",20)
+                .attr("width",(selectedPassholders/totalselectedriders)*barchartsize)
+                .attr("height",40)
+                .style("fill","#87bd6a");
+
+                d3.select("#statsSelected")
+                .append("text")
+                .attr("x",(selectedMembers/totalselectedriders)*barchartsize+5)
+                .attr("y",35)
+                .text("Pass user:")
+                .attr("font-family", "-apple-system,sans-serif")
+                .attr("font-size", "13px")
+                .attr("fill","white")
+                .style("text-shadow","1px 1px 2px rgba(50,50,50,0.6)")
+                .append("tspan")
+                .attr("x",(selectedMembers/totalselectedriders)*barchartsize+5)
+                .attr("y",55)
+                .text(selectedPassholders);
+              }
+
+              function drawUNSelectedBarChart(){
+              d3.select("#statusUnselected").remove();
+              d3.select("body")
+                .append("svg")
+                .attr("id","statusUnselected")
+                .attr("width",barchartsize*2)
+                .attr("height",100)
+              d3.select("#statusUnselected")
+                .append("text")
+                .attr("x",0)
+                .attr("y",15)
+                .text("Total Number of Rides Not Selected: "+totalunselectedriders)
+                .attr("font-family", "-apple-system,sans-serif")
+                .attr("font-weight","600")
+                .attr("font-size", "18px")
+                .attr("fill","black");
+
+
+                d3.select("#statusUnselected")
+                .append("rect")
+                .attr("x",0)
+                .attr("y",20)
+                .attr("width",(unselectedMembers/totalunselectedriders)*barchartsize)
+                .attr("height",40)
+                .style("fill","#009892");
+
+                d3.select("#statusUnselected")
+                .append("text")
+                .attr("x",5)
+                .attr("y",35)
+                .style("text-shadow","1px 1px 2px rgba(50,50,50,0.6)")
+                .text("Members:")
+                .attr("font-family", "-apple-system,sans-serif")
+                .attr("font-size", "13px")
+                .attr("fill","white")
+                .append("tspan")
+                .attr("x",5)
+                .attr("y",55)
+                .text(unselectedMembers);
+
+
+                d3.select("#statusUnselected")
+                .append("rect")
+                .attr("x",(unselectedMembers/totalunselectedriders)*barchartsize)
+                .attr("y",20)
+                .attr("width",(unselectedPassholders/totalunselectedriders)*barchartsize)
+                .attr("height",40)
+                .style("fill","#87bd6a");
+
+                d3.select("#statusUnselected")
+                .append("text")
+                .attr("x",(unselectedMembers/totalunselectedriders)*barchartsize+5)
+                .attr("y",35)
+                .text("Pass user:")
+                .attr("font-family", "-apple-system,sans-serif")
+                .attr("font-size", "13px")
+                .attr("fill","white")
+                .style("text-shadow","1px 1px 2px rgba(50,50,50,0.6)")
+                .append("tspan")
+                .attr("x",(unselectedMembers/totalunselectedriders)*barchartsize+5)
+                .attr("y",55)
+                .text(unselectedPassholders);
+              }
