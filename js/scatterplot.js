@@ -1,7 +1,7 @@
 var scatterChart = function (options) {
     var width = 600, height = 400;
     var margin=20;
-    var xdim='Precipitation_In';
+    var xdim='Mean_Visibility_Miles';
     var ydim='Mean_Temperature_F';
     var array=[];
     var chartSelection,
