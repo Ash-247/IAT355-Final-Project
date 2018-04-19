@@ -1,8 +1,8 @@
-var scatterChart = function (options) {
+var scatterChartTwo = function (options) {
     var width = 600, height = 400;
-    var margin= 20;
+    var margin= 22;
     var xdim='trip_id';
-    var ydim='Mean_Temperature_F';
+    var ydim='Precipitation_In';
     var array=[];
     var chartSelection,
         svg;
