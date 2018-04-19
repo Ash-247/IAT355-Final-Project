@@ -21,18 +21,18 @@
             /* opacity: 0; */
         }
 
-    #container{
-      display: flex;
-      flex-wrap: wrap;
-    }
+        #container{
+          display: flex;
+          flex-wrap: wrap;
+        }
 
-    #chart{
-      padding: 0.5rem;
-    }
+        #chart{
+          padding: 0.5rem;
+        }
 
-    #stats{
-      margin-top: 1rem;
-    }
+        #stats{
+          margin-top: 1rem;
+        }
     </style>
 </head>
 
@@ -55,6 +55,7 @@
 
     <script src="js/d3.js"></script>
     <script src="js/scatterplot.js"></script>
+    <script src="js/scatterplot2.js"></script>
     <script src="js/map.js"></script>
     <script src="userstats.js"></script>
 
@@ -121,6 +122,7 @@
                 d.To_LatLng = new L.LatLng(d.to_lat, d.to_long);
                 d.date = d.starttime;
                 d.dateN = d.date.substring(0, 10);
+                //d.trip_id = d.trip_id;
                  //https://www.w3schools.com/jsref/jsref_substring.asp
             })
 
@@ -188,18 +190,19 @@
 
 
         // SCATTERPLOT
-        var url ="data/weather.csv";
+        var url ="data/Combined3.csv";
         var scatterchart= scatterChart()
-            .width(300)
+            .width(400)
+            .height(300);
+        var scatterchartT= scatterChartTwo()
+            .width(400)
             .height(300);
         var parseTime = d3.timeParse("%Y");
 
         d3.csv(url)
             .row(function(d) {
                 d['Mean_Temperature_F']=+d['Mean_Temperature_F'];
-                d['Mean_Visibility_Miles']=+d['Mean_Visibility_Miles'];
-                //d['test'] = +d['test'];
-                    //console.log(+d['test']);
+                d['trip_id']=+d['trip_id'];
                 return d;
             })
 
@@ -207,6 +210,17 @@
                 scatterchart(d3.select("#chart"), dataset);
             });
 
+
+        d3.csv(url)
+            .row(function(d) {
+                d['Precipitation_In']=+d['Precipitation_In'];
+                d['trip_id']=+d['trip_id'];
+                return d;
+            })
+
+            .get(function(dataset) {
+                scatterchartT(d3.select("#chart"), dataset);
+            });
         //console.log(updateMap.selectedDate);
         //updateMap();
 
