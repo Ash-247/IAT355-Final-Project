@@ -13,7 +13,7 @@
         body{
             font-family: -apple-system, monospacehelvetica, verdana, sans-serif;
         }
-        #map { 
+        #map {
             height: 500px; width:50%; }
             .label{
             text-anchor: middle;
@@ -57,7 +57,7 @@
     <script src="js/scatterplot.js"></script>
     <script src="js/scatterplot2.js"></script>
     <script src="js/map.js"></script>
-    <script src="js/userstats.js"></script>
+    <script src="userstats.js"></script>
 
     <!--  -->
     <script>
@@ -74,6 +74,12 @@
             }
 
             console.log(selectedPoints.length);
+
+            selectedMembers = 0;
+            selectedPassholders =0;
+            unselectedMembers = 0;
+            unselectedPassholders =0;
+
             selectedPoints=_.uniq(selectedPoints);
 
             console.log(" uniq ... dates is "+selectedPoints.length)
@@ -87,7 +93,14 @@
                     for(i=0;i<selectedPoints.length;i++) {
                     // if  t.startime  is in the points selected array
                     // console.log(" trip "+ii+"   is selected at date "+t.starttime);
-                        if(t.starttime.substring(0,10) == selectedPoints[i]) { // just for test .
+                        if(t.starttime.substring(0,10) == selectedPoints[i]) {
+
+                          if(t.usertype == "Member"){
+                                    selectedMembers++;
+                                  }else{
+                                    selectedPassholders++;
+                                  }
+                           // just for test .
                             t.selected=true;
                             return true
                         }
@@ -111,6 +124,21 @@
             //     trips.style("stroke", "red");
             // }
             //return selectedDate;
+
+            totalselectedriders = selectedMembers + selectedPassholders;
+            totalunselectedriders = totalriders - totalselectedriders;
+
+            unselectedMembers = members - selectedMembers;
+            unselectedPassholders = passholders - selectedPassholders;
+
+            console.log(selectedPoints.length);
+            console.log(selectedMembers+" selected memebers");
+            console.log(selectedPassholders+" passholders")
+            console.log(unselectedMembers+" unselected memebers");
+            console.log(unselectedPassholders+" unselected passholders");
+            drawSelectedBarChart();
+            drawUNSelectedBarChart();
+
         }
 
         d3.csv("data/Combined2.csv", function(error, data) {
@@ -134,7 +162,7 @@
             //}
 
             trips = g.selectAll("line")
-                .data(data.filter(function (d,i){ return (i%4==0) })) //Counts and parses data values
+                .data(data.filter(function (d,i){ return (i<5000) })) //Counts and parses data values
                 .enter()
                 .append("line")
                 .style("stroke-opacity","0.01")
