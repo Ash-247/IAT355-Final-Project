@@ -47,7 +47,7 @@
         <input name="updateButton" 
            type="button" 
            value="Update" 
-           onclick="updateData()" />
+           onclick="updateData(arrayP)" />
     </div>
 
         <div id="tooltip"></div><!-- div to hold tooltip. -->
@@ -83,7 +83,7 @@
             }
 
             console.log(selectedPoints.length);
-
+            
             selectedMembers = 0;
             selectedPassholders = 0;
             unselectedMembers = 0;
@@ -103,7 +103,6 @@
                     // if  t.startime  is in the points selected array
                     // console.log(" trip "+ii+"   is selected at date "+t.starttime);
                         if(t.starttime.substring(0,10) == selectedPoints[i]) {
-
                           if(t.usertype == "Member"){
                                     selectedMembers++;
                                   }else{
@@ -150,9 +149,27 @@
 
         }
 
+        function updateData(p) { 
+            // toggledPoints=[];
+            // for (i=0; i < p.length; i++) {
+            //     toggledPoints.push(p[i].month);
+            //     console.log(p[i].month);
+            // }
+            //console.log(p.length);
+                // trips.filter(function (p) {
+                //     for (i = 0; i < 1; i++) {
+                //         if (p[i] = "October") {
+                //             trips.style("stroke", "green");
+                //         }
+                //     }
+                // })
+        }
+
         d3.csv("data/Combined2.csv", function(error, data) {
             if (error) throw error;
-
+            
+            arrayP = [];
+            
             /* Add a LatLng objects to each item in the dataset, using lat and long from dataset. */
             data.forEach(function (d) {
                 d.From_LatLng = new L.LatLng(d.from_lat, d.from_long);
@@ -161,6 +178,8 @@
                 d.dateN = d.date.substring(0, 2);
                 d.month = d.month;
 
+               // if d.month = "October"
+                arrayP.push(d.month);
                  //https://www.w3schools.com/jsref/jsref_substring.asp
             })
 
