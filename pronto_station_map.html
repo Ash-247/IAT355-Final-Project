@@ -41,6 +41,14 @@
         <h1>Pronto Bikes</h1>
         <h3>Looking at rides from 2014 and 2015</h3>
     </div>
+
+    <div id="option">
+        <input name="updateButton" 
+           type="button" 
+           value="Update" 
+           onclick="updateData()" />
+    </div>
+
         <div id="tooltip"></div><!-- div to hold tooltip. -->
         <div id="container">
             <div id="map"></div>
@@ -76,9 +84,9 @@
             console.log(selectedPoints.length);
 
             selectedMembers = 0;
-            selectedPassholders =0;
+            selectedPassholders = 0;
             unselectedMembers = 0;
-            unselectedPassholders =0;
+            unselectedPassholders = 0;
 
             selectedPoints=_.uniq(selectedPoints);
 
@@ -216,6 +224,35 @@
             // tooltipHtml();
         });
 
+            function updateData() {
+
+                // Get the data again
+                d3.csv("data/Combined3.csv", function(error, data) {
+                    data.forEach(function(d) {
+                        d.dateN = d.date.substring(0, 1);
+                    });
+
+                    // Scale the range of the data again 
+                    x.domain(d3.extent(data, function(d) { return d.date; }));
+                    y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+                // Select the section we want to apply our changes to
+                var svg = d3.select("body").transition();
+
+                // Make the changes
+                    svg.select(".line")   // change the line
+                        .duration(750)
+                        .attr("d", valueline(data));
+                    svg.select(".x.axis") // change the x axis
+                        .duration(750)
+                        .call(xAxis);
+                    svg.select(".y.axis") // change the y axis
+                        .duration(750)
+                        .call(yAxis);
+
+                });
+            }
+
 
         // SCATTERPLOT
         var url ="data/Combined3.csv";
@@ -229,8 +266,8 @@
 
         d3.csv(url)
             .row(function(d) {
-                d['Mean_Temperature_F']=+d['Mean_Temperature_F'];
-                d['trip_id']=+d['trip_id'];
+                d['Count']=+d['Count'];
+                d['Precipitation_In']=+d['Precipitation_In'];
                 return d;
             })
 
@@ -241,8 +278,8 @@
 
         d3.csv(url)
             .row(function(d) {
+                d['Count']=+d['Count'];
                 d['Precipitation_In']=+d['Precipitation_In'];
-                d['trip_id']=+d['trip_id'];
                 return d;
             })
 

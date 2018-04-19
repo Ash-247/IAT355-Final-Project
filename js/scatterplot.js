@@ -1,7 +1,7 @@
 var scatterChart = function (options) {
     var width = 600, height = 400;
     var margin= 20;
-    var xdim='trip_id';
+    var xdim='Count';
     var ydim='Mean_Temperature_F';
     var array=[];
     var chartSelection,
@@ -45,6 +45,8 @@ var scatterChart = function (options) {
             .attr("class", "x axis")
             .attr("transform","translate(0 ,"+(height-margin)+")")
             .call(xAxis);
+            // .enter()
+            // .append("text", "hi")
 
 
         svg.append("g")

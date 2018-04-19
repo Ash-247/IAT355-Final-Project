@@ -1,7 +1,7 @@
 var scatterChartTwo = function (options) {
     var width = 600, height = 400;
     var margin= 22;
-    var xdim='trip_id';
+    var xdim='Count';
     var ydim='Precipitation_In';
     var array=[];
     var chartSelection,
