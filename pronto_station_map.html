@@ -1,240 +1,229 @@
 <!DOCTYPE html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
-      integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-      crossorigin=""/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+          integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+          crossorigin=""/>
 
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
 
-<!-- code based from lecture content -->
-<style>
-    body{
-        font-family: -apple-system, monospacehelvetica, verdana, sans-serif;
-    }
-    #map { height: 500px; width:50%; }
-        .label{
-        text-anchor: middle;
-        cursor: default;
-        /* opacity: 0; */
-    }
-
-#container{
-  display: flex;
-  flex-wrap: wrap;
-}
-#chart{
-  padding: 0.5rem;
-}
-#stats{
-  margin-top: 1rem;
-}
-</style>
-</head>
-<body>
-<div>
-    <h1>Pronto Bikes</h1>
-    <h3>Looking at rides from 2014 and 2015</h3>
-  </div>
-    <div id="tooltip"></div><!-- div to hold tooltip. -->
-    <div id="container">
-    <div id="map"></div>
-    <div class="chart" id="chart" >
-
-
-</div>
-</div>
-
-
-<!-- Leaflet map -->
-<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
-        integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
-        crossorigin="">
-</script>
-
-<script src="js/d3.js"></script>
-<script src="js/scatterplot.js"></script>
-<script src="js/map.js"></script>
-<script src="userstats.js"></script>
-
-<!--  -->
-<script>
-var startTime;
-var trips;
-var selectedPoints=[];
-
-
-function updateMap(p) { //'p' for points (on scatterplot)
-     selectedPoints=[];
-     console.log(p);
-    for (i=0; i < p.length; i++) {
-        selectedPoints.push(p[i].DateN);
-        // console.log(p[0].DataN);
-    }
-
-console.log(selectedPoints.length);
-
-
-selectedPoints=_.uniq(selectedPoints);
-
-console.log(" uniq ... dates is "+selectedPoints.length)
-// make sure all trips are black
-trips.style("stroke", "black")
-.style("stroke-opacity",0.01)
-.style("stroke-width","1");
-// change trips ...
-if (selectedPoints.length>0)
-    trips.filter(function (t,ii){
-
-      for(i=0;i<selectedPoints.length;i++){
-        // if  t.startime  is in the points selected array
-        // console.log(" trip "+ii+"   is selected at date "+t.starttime);
-        if(t.starttime.substring(0,10) == selectedPoints[i]){ // just for test .
-        t.selected=true;
-        return true
-}
+    <!-- code based from lecture content -->
+    <style>
+        body{
+            font-family: -apple-system, monospacehelvetica, verdana, sans-serif;
         }
-        t.selected=false;
-         return false;
+        #map { 
+            height: 500px; width:50%; }
+            .label{
+            text-anchor: middle;
+            cursor: default;
+            /* opacity: 0; */
+        }
 
+        #container{
+          display: flex;
+          flex-wrap: wrap;
+        }
 
-    })
-    .style("stroke","red")
-    .style("stroke-opacity",0.09)
-    .style("stroke-width","2");
+        #chart{
+          padding: 0.5rem;
+        }
 
+        #stats{
+          margin-top: 1rem;
+        }
+    </style>
+</head>
 
-    //console.log(p[0].DateN);
-    // var current = ;
-//
-// selectedPoints.push(p[0].DateN);
+<body>
+    <div>
+        <h1>Pronto Bikes</h1>
+        <h3>Looking at rides from 2014 and 2015</h3>
+    </div>
+        <div id="tooltip"></div><!-- div to hold tooltip. -->
+        <div id="container">
+            <div id="map"></div>
+            <div class="chart" id="chart"></div>
+        </div>
 
+    <!-- Leaflet map -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin="">
+    </script>
 
+    <script src="js/d3.js"></script>
+    <script src="js/scatterplot.js"></script>
+    <script src="js/scatterplot2.js"></script>
+    <script src="js/map.js"></script>
+    <script src="userstats.js"></script>
 
-    // selectedDate = p[0].DateN
-    // //console.log(selectedDate);
-    //
-    // if (selectedDate = "3/15/2015") {
-    //     // console.log("match");
-    //     trips.style("stroke", "red");
-    // }
-    //return selectedDate;
-}
+    <!--  -->
+    <script>
+        var startTime;
+        var trips;
+        var selectedPoints=[];
 
-    d3.csv("data/Combined2.csv", function(error, data) {
-        if (error) throw error;
+        function updateMap(p) { //'p' for points (on scatterplot)
+            selectedPoints=[];
+            console.log(p);
+            for (i=0; i < p.length; i++) {
+                selectedPoints.push(p[i].DateN);
+                // console.log(p[0].DataN);
+            }
 
-        /* Add a LatLng objects to each item in the dataset, using lat and long from dataset. */
-        data.forEach(function (d) {
-            d.From_LatLng = new L.LatLng(d.from_lat, d.from_long);
-            d.To_LatLng = new L.LatLng(d.to_lat, d.to_long);
-            d.date = d.starttime;
-            d.dateN = d.date.substring(0, 10);
-             //https://www.w3schools.com/jsref/jsref_substring.asp
-        })
+            console.log(selectedPoints.length);
+            selectedPoints=_.uniq(selectedPoints);
 
-        //for (i = 0; i < data.length; i++) {
-            // if (updateMap().selectedDate = data[i].starttime.substring(0, 10)) {
+            console.log(" uniq ... dates is "+selectedPoints.length)
+            // make sure all trips are black
+            trips.style("stroke", "black")
+            .style("stroke-opacity",0.01)
+            .style("stroke-width","1");
+            // change trips ...
+            if (selectedPoints.length>0)
+                trips.filter(function (t,ii) {
+                    for(i=0;i<selectedPoints.length;i++) {
+                    // if  t.startime  is in the points selected array
+                    // console.log(" trip "+ii+"   is selected at date "+t.starttime);
+                        if(t.starttime.substring(0,10) == selectedPoints[i]) { // just for test .
+                            t.selected=true;
+                            return true
+                        }
+                    }
+                    t.selected=false;
+                    return false;
+                })
+                .style("stroke","red")
+                .style("stroke-opacity",0.09)
+                .style("stroke-width","2");
+
+            //console.log(p[0].DateN);
+            // var current = ;
+            // selectedPoints.push(p[0].DateN);
+
+            // selectedDate = p[0].DateN
+            // //console.log(selectedDate);
+            //
+            // if (selectedDate = "3/15/2015") {
+            //     // console.log("match");
             //     trips.style("stroke", "red");
             // }
-            //console.log(data[i].starttime.substring(0, 10));
-        //}
-
-         trips = g.selectAll("line")
-            .data(data.filter(function (d,i){ return (i%4==0) })) //Counts and parses data values
-            .enter()
-            .append("line")
-            .style("stroke-opacity","0.01")
-            .style("stroke-width","1");
-
-
-            // .style("stroke-opacity", .01);
-            // .on("mouseover", function (d) {
-            //     d3.select(this.trips).select("line").style("fill", "blue");
-            // }).on("mouseout", function (d) {
-            //     d3.select(this.trips).select("line").style("fill", "black");
-            // });
-
-        function update() { //Updates line (trip) start point and end point when map changes
-            // feature.attr("cx",
-            //     function (d) {
-            //         return mymap.latLngToLayerPoint(d.LatLng).x;
-            // });
-            trips.attr("x1", function (d) {
-                return mymap.latLngToLayerPoint(d.From_LatLng).x; });
-            trips.attr("y1", function (d) {
-                return mymap.latLngToLayerPoint(d.From_LatLng).y;
-            });
-
-            trips.attr("x2", function (d) {
-                return mymap.latLngToLayerPoint(d.To_LatLng).x; });
-            trips.attr("y2", function (d) {
-                return mymap.latLngToLayerPoint(d.To_LatLng).y;
-            });
-
-
-            if(selectedPoints.length>0){
-            for(i = 0;i < selectedPoints.length;i++){
-
-
-              trips.style("stroke",
-              function(d){if(d.starttime.substring(0,10) == selectedPoints[i]){
-                return "red";
-              }else{
-                return "black";}});
-              trips.style("stroke-opacity",
-              function(d){if(d.starttime.substring(0,10) == selectedPoints[i]){
-                return "0.2";
-              }else{
-                return "0.01";}});
-              }
-            }else{
-                trips.style("stroke","black");
-                trips.style("stroke-opacity","0.01");
-              }
-
-
-
-
+            //return selectedDate;
         }
 
-      //  mymap.on("viewreset", update);
-      //  mymap.on("zoomend", update);
+        d3.csv("data/Combined2.csv", function(error, data) {
+            if (error) throw error;
 
-        update();
+            /* Add a LatLng objects to each item in the dataset, using lat and long from dataset. */
+            data.forEach(function (d) {
+                d.From_LatLng = new L.LatLng(d.from_lat, d.from_long);
+                d.To_LatLng = new L.LatLng(d.to_lat, d.to_long);
+                d.date = d.starttime;
+                d.dateN = d.date.substring(0, 10);
+                //d.trip_id = d.trip_id;
+                 //https://www.w3schools.com/jsref/jsref_substring.asp
+            })
 
-        // tooltipHtml();
-    });
+            //for (i = 0; i < data.length; i++) {
+                // if (updateMap().selectedDate = data[i].starttime.substring(0, 10)) {
+                //     trips.style("stroke", "red");
+                // }
+                //console.log(data[i].starttime.substring(0, 10));
+            //}
 
+            trips = g.selectAll("line")
+                .data(data.filter(function (d,i){ return (i%4==0) })) //Counts and parses data values
+                .enter()
+                .append("line")
+                .style("stroke-opacity","0.01")
+                .style("stroke-width","1");
+                // .style("stroke-opacity", .01);
+                // .on("mouseover", function (d) {
+                //     d3.select(this.trips).select("line").style("fill", "blue");
+                // }).on("mouseout", function (d) {
+                //     d3.select(this.trips).select("line").style("fill", "black");
+                // });
 
+            function update() { //Updates line (trip) start point and end point when map changes
+                // feature.attr("cx",
+                // function (d) {
+                //     return mymap.latLngToLayerPoint(d.LatLng).x;
+                // });
+                trips.attr("x1", function (d) {
+                    return mymap.latLngToLayerPoint(d.From_LatLng).x; });
+                trips.attr("y1", function (d) {
+                    return mymap.latLngToLayerPoint(d.From_LatLng).y;
+                });
 
+                trips.attr("x2", function (d) {
+                    return mymap.latLngToLayerPoint(d.To_LatLng).x; });
+                trips.attr("y2", function (d) {
+                    return mymap.latLngToLayerPoint(d.To_LatLng).y;
+                });
 
-    // SCATTERPLOT
-    var url ="data/weather.csv";
-    var scatterchart= scatterChart()
-        .width(300)
-        .height(300);
-    var parseTime = d3.timeParse("%Y");
+                if(selectedPoints.length>0) {
+                    for(i = 0;i < selectedPoints.length;i++) {
+                        trips.style("stroke",
+                        function(d){if(d.starttime.substring(0,10) == selectedPoints[i]) {
+                            return "red";
+                        } else {
+                            return "black";}});
+                            trips.style("stroke-opacity",
+                            function(d){if(d.starttime.substring(0,10) == selectedPoints[i]) {
+                            return "0.2";
+                        } else {
+                            return "0.01";}});
+                    }
+                } else {
+                    trips.style("stroke","black");
+                    trips.style("stroke-opacity","0.01");
+                }
+            }
+            // mymap.on("viewreset", update);
+            // mymap.on("zoomend", update);
 
-    d3.csv(url)
-        .row(function(d){
-            d['Mean_Temperature_F']=+d['Mean_Temperature_F'];
-            d['Precipitation_In']=+d['Precipitation_In'];
-            //d['test'] = +d['test'];
-                //console.log(+d['test']);
-            return d;
-        })
-
-        .get(function(dataset) {
-            scatterchart(d3.select("#chart"), dataset);
+            update();
+            // tooltipHtml();
         });
 
-    //console.log(updateMap.selectedDate);
-    //updateMap();
+
+        // SCATTERPLOT
+        var url ="data/Combined3.csv";
+        var scatterchart= scatterChart()
+            .width(400)
+            .height(300);
+        var scatterchartT= scatterChartTwo()
+            .width(400)
+            .height(300);
+        var parseTime = d3.timeParse("%Y");
+
+        d3.csv(url)
+            .row(function(d) {
+                d['Mean_Temperature_F']=+d['Mean_Temperature_F'];
+                d['trip_id']=+d['trip_id'];
+                return d;
+            })
+
+            .get(function(dataset) {
+                scatterchart(d3.select("#chart"), dataset);
+            });
 
 
-</script>
+        d3.csv(url)
+            .row(function(d) {
+                d['Precipitation_In']=+d['Precipitation_In'];
+                d['trip_id']=+d['trip_id'];
+                return d;
+            })
 
+            .get(function(dataset) {
+                scatterchartT(d3.select("#chart"), dataset);
+            });
+        //console.log(updateMap.selectedDate);
+        //updateMap();
+
+    </script>
 </body>
 </html>
