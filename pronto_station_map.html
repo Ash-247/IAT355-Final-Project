@@ -42,6 +42,7 @@
         <h3>Looking at rides from 2014 and 2015</h3>
     </div>
 
+<!-- Button -->
     <div id="option">
         <input name="updateButton" 
            type="button" 
@@ -157,8 +158,9 @@
                 d.From_LatLng = new L.LatLng(d.from_lat, d.from_long);
                 d.To_LatLng = new L.LatLng(d.to_lat, d.to_long);
                 d.date = d.starttime;
-                d.dateN = d.date.substring(0, 10);
-                //d.trip_id = d.trip_id;
+                d.dateN = d.date.substring(0, 2);
+                d.month = d.month;
+
                  //https://www.w3schools.com/jsref/jsref_substring.asp
             })
 
@@ -170,7 +172,7 @@
             //}
 
             trips = g.selectAll("line")
-                .data(data.filter(function (d,i){ return (i<5000) })) //Counts and parses data values
+                .data(data.filter(function (d,i) { return (i<5000) })) //Counts and parses data values
                 .enter()
                 .append("line")
                 .style("stroke-opacity","0.01")
@@ -223,35 +225,6 @@
             update();
             // tooltipHtml();
         });
-
-            function updateData() {
-
-                // Get the data again
-                d3.csv("data/Combined3.csv", function(error, data) {
-                    data.forEach(function(d) {
-                        d.dateN = d.date.substring(0, 1);
-                    });
-
-                    // Scale the range of the data again 
-                    x.domain(d3.extent(data, function(d) { return d.date; }));
-                    y.domain([0, d3.max(data, function(d) { return d.close; })]);
-
-                // Select the section we want to apply our changes to
-                var svg = d3.select("body").transition();
-
-                // Make the changes
-                    svg.select(".line")   // change the line
-                        .duration(750)
-                        .attr("d", valueline(data));
-                    svg.select(".x.axis") // change the x axis
-                        .duration(750)
-                        .call(xAxis);
-                    svg.select(".y.axis") // change the y axis
-                        .duration(750)
-                        .call(yAxis);
-
-                });
-            }
 
 
         // SCATTERPLOT
