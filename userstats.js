@@ -1,5 +1,3 @@
-
-
 var members=0;
 var passholders=0;
 
@@ -87,7 +85,7 @@ var rider=[];
                 var f = d3.format(".1f");
                 var avgTripLengthseconds = d3.mean(data, function(d){return +d.tripduration});
                 var avgTripLength = (f(avgTripLengthseconds/60));
-                console.log(f(avgTripLength/60)+" minutes");
+                //console.log(f(avgTripLength/60)+" minutes");
                 totalriders = members + passholders;
 
 
