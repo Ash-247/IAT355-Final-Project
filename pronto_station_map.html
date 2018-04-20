@@ -44,11 +44,18 @@
 
 <!-- Button -->
     <div id="option">
-        <input name="updateButton" 
-           type="button" 
-           value="Update" 
+        <input name="updateButton"
+           type="button"
+           value="Show Rides During Peak Hours Only"
            onclick="updateData(arrayP)" />
     </div>
+    <div id="reset">
+        <input name="resetButton"
+           type="button"
+           value="reset map"
+           onclick="updateResetMap()" />
+    </div>
+
 
         <div id="tooltip"></div><!-- div to hold tooltip. -->
         <div id="container">
@@ -79,7 +86,7 @@
             unselectedMembers = 0;
             unselectedPassholders = 0;
             selectedPoints = []; // array for brushed points
-            
+
             console.log(p);
             for (i=0; i < p.length; i++) {
                 selectedPoints.push(p[i].DateN);
@@ -148,7 +155,7 @@
         }
 
 
-        function updateData(p) { 
+        function updateData(p) {
             toggledPoints=[];
             // console.log(toggledPoints);
             for (i=0; i < 3000; i++) { //not using p.length beacuse that is too large.
@@ -183,16 +190,16 @@ console.log(toggledPoints.length);
                     return false;
                 })
                 .style("stroke", "green")
-                .style("stroke-opacity",0.02)
+                .style("stroke-opacity",0.01)
                 .style("stroke-width","2");
         }
 
 
         d3.csv("data/Combined2.csv", function(error, data) {
             if (error) throw error;
-            
+
             arrayP = []; //array for toggling months on "Update" button click
-            
+
             /* Add a LatLng objects to each item in the dataset, using lat and long from dataset. */
             data.forEach(function (d) {
                 d.From_LatLng = new L.LatLng(d.from_lat, d.from_long);

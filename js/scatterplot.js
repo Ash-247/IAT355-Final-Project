@@ -1,6 +1,6 @@
 var scatterChart = function (options) {
     var width = 600, height = 400;
-    var margin= 20;
+    var margin= 40;
     var xdim='Count';
     var ydim='Mean_Temperature_F';
     var array=[];
@@ -13,8 +13,8 @@ var scatterChart = function (options) {
     function chart(selection, dataset) {
         chartSelection = selection;
         svg = selection.append("svg")
-            .attr("width", width)
-            .attr("height", height);
+            .attr("width", width+20)
+            .attr("height", height+20);
         // Create Scales
         //x-axis
         var maxx = d3.max(dataset, function (d){
@@ -45,14 +45,31 @@ var scatterChart = function (options) {
             .attr("class", "x axis")
             .attr("transform","translate(0 ,"+(height-margin)+")")
             .call(xAxis);
-            // .enter()
-            // .append("text", "hi")
+            svg.append("text")
+           .attr("transform",
+                 "translate(" + (width/2) + " ," +
+                                (height + 5) + ")")
+           .style("text-anchor", "middle")
+           .text("Number Of Rides");
+
 
 
         svg.append("g")
             .attr("class", "y axis")
             .attr("transform","translate("+margin+" , 0)")
             .call(yAxis);
+
+            svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - 5)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Average Tempurature (F)");
+
+
+
+
 
 
         circles = svg.selectAll("circle.points")
@@ -74,6 +91,8 @@ var scatterChart = function (options) {
 
         svg.append("g")
             .call(brush);
+
+          
     }
 
 
