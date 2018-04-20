@@ -88,7 +88,7 @@
 
             console.log(selectedPoints.length);
 
-            selectedPoints=_.uniq(selectedPoints);
+           //selectedPoints=_.uniq(selectedPoints);
 
             console.log(" uniq ... dates is "+selectedPoints.length)
             // make sure all trips are black
@@ -145,7 +145,6 @@
             console.log(unselectedPassholders+" unselected passholders");
             drawSelectedBarChart();
             drawUNSelectedBarChart();
-
         }
 
 
@@ -154,7 +153,7 @@
             // console.log(toggledPoints);
             for (i=0; i < 15; i++) { //not using p.length beacuse that is too large.
                 if (p[i].month == "10") {
-                    toggledPoints.push(p[i]);
+                    toggledPoints.push(p[i].month);
                     //console.log(p[i].month);
                     //console.log(toggledPoints[i].month);
                     //trips.style("stroke", "green");
@@ -167,13 +166,13 @@
             trips.style("stroke", "black")
             .style("stroke-opacity",0.01)
             .style("stroke-width","1");
-            
+
             if (toggledPoints.length>0)
                 trips.filter(function (t,i) {
-                     for(i=0;i<toggledPoints.length;i++) {
+                     for(i=0; i<toggledPoints.length; i++) {
                      // if  t.startime  is in the points toggled array
                      // console.log(" trip "+ii+"   is selected at date "+t.starttime);
-                         if(t.starttime.substring(0,2) == toggledPoints[i].month) {
+                         if(t.starttime.substring(0,2) == toggledPoints[i]) {
                            // just for test .
                             t.toggled=true;
                             return true;
