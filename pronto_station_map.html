@@ -74,7 +74,12 @@
         var selectedPoints=[];
 
         function updateMap(p) { //'p' for points (on scatterplot)
-            selectedPoints=[];
+            selectedMembers = 0;
+            selectedPassholders = 0;
+            unselectedMembers = 0;
+            unselectedPassholders = 0;
+            selectedPoints = []; // array for brushed points
+            
             console.log(p);
             for (i=0; i < p.length; i++) {
                 selectedPoints.push(p[i].DateN);
@@ -82,11 +87,6 @@
             }
 
             console.log(selectedPoints.length);
-            
-            selectedMembers = 0;
-            selectedPassholders = 0;
-            unselectedMembers = 0;
-            unselectedPassholders = 0;
 
             selectedPoints=_.uniq(selectedPoints);
 
@@ -162,6 +162,12 @@
                     console.log("no");
                 }
             }
+
+            // make sure all trips are black
+            trips.style("stroke", "black")
+            .style("stroke-opacity",0.01)
+            .style("stroke-width","1");
+            
             if (toggledPoints.length>0)
                 trips.filter(function (t,i) {
                      for(i=0;i<toggledPoints.length;i++) {
