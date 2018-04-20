@@ -78,7 +78,7 @@ var scatterChart = function (options) {
 
 
     function brushed() { //Brush/select points on scatterplot
-         array = []; //Array for updateMap
+        array = []; //Array for updateMap
         var s = d3.event.selection,
             x0 = s[0][0],
             y0 = s[0][1],

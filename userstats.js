@@ -55,10 +55,6 @@ var rider=[];
 
 
 
-
-
-
-
                 // var trips = g.selectAll("line")
                 //     .data(data)
                 //     .enter()
@@ -66,12 +62,6 @@ var rider=[];
                 //     .style("stroke", "black")
                 //     .style("stroke-width","1")
                 //     .style("stroke-opacity", .01);
-
-
-
-
-
-
 
 
 

@@ -70,7 +70,6 @@
 
     <!--  -->
     <script>
-        var startTime;
         var trips;
         var selectedPoints=[];
 
@@ -149,38 +148,41 @@
 
         }
 
+
         function updateData(p) { 
-            // toggledPoints=[];
-            // for (i=0; i < p.length; i++) {
-            //     toggledPoints.push(p[i].month);
-            //     console.log(p[i].month);
-            // }
-            //console.log(p.length);
-                // trips.filter(function (p) {
-                //     for (i = 0; i < 1; i++) {
-                //         if (p[i] = "October") {
-                //             trips.style("stroke", "green");
-                //         }
-                //     }
-                // })
+            toggledPoints=[];
+            //console.log(p);
+            for (i=0; i < 100; i++) {
+                if (p[i].month == "10") {
+                    toggledPoints.push(p[i]);
+                    //console.log(p[i]);
+                    //trips.style("stroke", "green");
+                } else {
+                    console.log("no");
+                }
+            }
+            if (toggledPoints.length>0)
+                trips.filter(function (t,ii) {
+                })
+                .style("stroke", "green");
         }
+
 
         d3.csv("data/Combined2.csv", function(error, data) {
             if (error) throw error;
             
-            arrayP = [];
+            arrayP = []; //array for toggling months on "Update" button click
             
             /* Add a LatLng objects to each item in the dataset, using lat and long from dataset. */
             data.forEach(function (d) {
                 d.From_LatLng = new L.LatLng(d.from_lat, d.from_long);
                 d.To_LatLng = new L.LatLng(d.to_lat, d.to_long);
                 d.date = d.starttime;
-                d.dateN = d.date.substring(0, 2);
-                d.month = d.month;
+                d.dateN = d.date.substring(0, 10); //https://www.w3schools.com/jsref/jsref_substring.asp
+               //d.month = d.month;
+                d.month = d.date.substring(0, 2);
 
-               // if d.month = "October"
-                arrayP.push(d.month);
-                 //https://www.w3schools.com/jsref/jsref_substring.asp
+                arrayP.push(d); //push month values from csv to "arrayP"
             })
 
             //for (i = 0; i < data.length; i++) {
